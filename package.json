@@ -12,7 +12,7 @@
         "dev:server": "webpack-dev-server ./main.js --hot --watch --colors --open --config ./build-tools/webpack/webpack.dev.js",
         "dev:no-server": "webpack --progress --colors --watch --open --config ./build-tools/webpack/webpack.dev.js",
         "debug": "node --inspect --debug-brk ./main.js",
-        "sqs": "squarespace-server https://DOMAIN.squarespace.com --auth -d ./template",
+        "sqs": "squarespace-server https://gavin-hackett-jedg.squarespace.com --auth -d ./template",
         "docs": "documentation build --output ./README.md --format md",
         "analyze": "npm run build --env.presets analyze"
     },
