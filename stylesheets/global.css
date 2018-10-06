@@ -1,0 +1,106 @@
+@media screen and (min-width: 1024px) {
+  #header {
+    display: none;
+  }
+}
+@media screen and (min-width: 1025px) {
+  #h2flow-main-nav {
+    display: block !important;
+  }
+}
+.H2F-top {
+  background: #0a60b6;
+  width: 100%;
+  height: 15px;
+  border-bottom: 2px solid white;
+}
+.H2F {
+  border-top: 4px solid #2f407c;
+}
+.H2F .H2F__upper-navigation {
+  margin-bottom: -34px;
+}
+.H2F .H2F__upper-navigation .H2F__inner-navigation-content {
+  padding-top: 1em;
+}
+.H2F .H2F__upper-navigation .nav-wrapper {
+  margin-right: -1.5em;
+}
+.H2F .H2F__upper-navigation .nav-item {
+  margin-right: 1.5em;
+  flex: 0 1 100px;
+}
+.H2F .H2F__upper-navigation .nav-item img {
+  max-height: 20px;
+  margin-bottom: -5px;
+}
+.H2F .H2F__main-navigation .H2F__inner-navigation-content {
+  padding: 0em 1em;
+  padding-bottom: 1em;
+  display: flex;
+  align-items: flex-end;
+}
+.H2F .H2F__main-navigation .H2F__inner-navigation-content .H2F__logo {
+  flex: 0 1 200px;
+}
+.H2F .H2F__main-navigation .H2F__inner-navigation-content .H2F__navigation {
+  flex: 1 1 500px;
+}
+.H2F #h2-navigation-upper {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.H2F #h2-navigation {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  max-width: 80%;
+}
+.H2F #h2-navigation .nav-item {
+  text-align: center;
+  font-size: 1em;
+  text-transform: uppercase;
+}
+.H2F #h2-navigation .nav-item a {
+  height: 40px;
+  display: block;
+}
+.H2F__mega-menu-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: white;
+  z-index: 999;
+  border-top: 2px solid #cfe4f8;
+  border-bottom: 2px solid #cfe4f8;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 400ms;
+}
+.H2F__mega-menu-wrapper.active {
+  opacity: 1;
+  visibility: visible;
+}
+.H2F__mega-menu-wrapper .H2F__dropdown-nav {
+  padding: 0 2em;
+  display: flex;
+  margin-left: -1.3em;
+  justify-content: space-around;
+}
+.H2F__mega-menu-wrapper .H2F__dropdown-nav > .nav-item {
+  flex: 1 1 50px;
+  padding: 1.3em;
+  border-right: 2px solid #cfe4f8;
+}
+.H2F__mega-menu-wrapper .H2F__dropdown-nav > .nav-item:last-child {
+  border-right: none;
+}
+.H2F__mega-menu-wrapper .folder-toggle {
+  font-weight: 600;
+  margin-bottom: 1em;
+  color: #2f407c;
+  text-transform: uppercase;
+}

@@ -13,18 +13,13 @@ const App = {
      */
     registerAPIControllers () {
         controller.watch([{
-            name: "root",
-            el: "#main"
+            name: "navigation",
+            el: "#h2flow-main-nav"
         }]);
     }
 };
 
 // on dom content load
 document.addEventListener("DOMContentLoaded", () => {
-    const root = document.createElement("div");
-
-    root.id = "main";
-
-    document.querySelector("body").appendChild(root);
     App.init();
 });

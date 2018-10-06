@@ -1,31 +1,38 @@
+const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
-const HtmlWebpackPlugin = require("html-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = merge(common, {
     mode: 'development',
-    entry: ['../../main.js'],
+    entry: ['../../main.js', '../../main.less'],
     devtool: 'inline-source-map',
-    devServer: {
-        contentBase: './test/'
-    },
     module: {
-        rules: [{ // @rule: LESS
+        rules: [{
             test: /\.less$/,
             use: [
-                'style-loader',
+                MiniCssExtractPlugin.loader,
                 'css-loader',
-                'less-loader'
+                'less-loader',
+                {
+                    loader: 'postcss-loader',
+                    options: { config: { path: './build-tools/postcss.config.js' } },
+                }
             ]
-        }, ]
+        }]
     },
     plugins: [
-        new HtmlWebpackPlugin({
-            filename: "index.html"
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify('development')
+        }),
+        new MiniCssExtractPlugin({
+            filename: "bundle.css",
+            chunkFilename: "[id].css"
         })
     ],
     output: {
+        publicPath: '/',
+        path: __dirname + "../../../template/assets",
         filename: "bundle.js"
     }
 });

@@ -1,7 +1,6 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
-const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const optimization = require("./util/optimization.js");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const WebpackBundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
@@ -25,7 +24,6 @@ const config = merge(common, optimization, {
         }]
     },
     plugins: [
-        // new UglifyJSPlugin(),
         new webpack.DefinePlugin({
             'process.env.NODE_ENV': JSON.stringify('production')
         }),
