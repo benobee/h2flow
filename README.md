@@ -8,12 +8,8 @@
         -   [Parameters][4]
     -   [watch][5]
         -   [Parameters][6]
--   [findOne][7]
-    -   [Parameters][8]
--   [find][9]
-    -   [Parameters][10]
--   [api][11]
-    -   [Examples][12]
+-   [api][7]
+    -   [Examples][8]
 
 ## registerAPIControllers
 
@@ -31,9 +27,9 @@ Tests whether the node is active in the DOM
 
 #### Parameters
 
--   `query` **[String][13]** query selector
+-   `query` **[String][9]** query selector
 
-Returns **[HTMLElement][14]** DOM Node
+Returns **[HTMLElement][10]** DOM Node
 
 ### watch
 
@@ -41,27 +37,7 @@ emit event when the DOM element is active
 
 #### Parameters
 
--   `array` **[Array][15]** list of nodes
-
-## findOne
-
-returns only one element
-
-### Parameters
-
--   `query` **[String][13]** the dom selector
-
-Returns **[HTMLElement][14]** 
-
-## find
-
-returns an a node list of all available elements
-
-### Parameters
-
--   `query` **[String][13]** the dom selector
-
-Returns **[NodeList][16]** 
+-   `array` **[Array][11]** list of nodes
 
 ## api
 
@@ -85,23 +61,12 @@ controller.on("navbar", (el) => {
 
 [6]: #parameters-1
 
-[7]: #findone
+[7]: #api
 
-[8]: #parameters-2
+[8]: #examples
 
-[9]: #find
+[9]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
 
-[10]: #parameters-3
+[10]: https://developer.mozilla.org/docs/Web/HTML/Element
 
-[11]: #api
-
-[12]: #examples
-
-[13]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/String
-
-[14]: https://developer.mozilla.org/docs/Web/HTML/Element
-
-[15]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array
-
-[16]: https://developer.mozilla.org/docs/Web/API/NodeList
-# h2flow
+[11]: https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Array

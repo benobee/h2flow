@@ -3,7 +3,7 @@ const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 const optimization = require("./util/optimization.js");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const WebpackBundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+// const WebpackBundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 const config = merge(common, optimization, {
     mode: 'production',
@@ -31,7 +31,7 @@ const config = merge(common, optimization, {
             filename: "bundle.css",
             chunkFilename: "[id].css"
         }),
-        new WebpackBundleAnalyzer()
+        // new WebpackBundleAnalyzer()
     ],
     output: {
         publicPath: '/',

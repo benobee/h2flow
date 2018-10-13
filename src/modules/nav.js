@@ -14,95 +14,112 @@ const nav = (el) => {
 
 	// dropdown component
 	const dropdown = {
-		init () {
-			this.construct();
-			this.listen();
+		keepOpen: false,
+		el: el.find(".H2F__mega-menu-wrapper")[ 0 ],
+		menus: util.toArray(document.querySelectorAll(".H2F__mega-menu")),
+		toggleActive (index) {
+			this.resetMenus();
+			this.menus[ index ].classList.add("active");
 		},
-		listen () {
-			eventBus.on("nav-interact-out", (e) => {
-				console.log(e, e.toElement.className);
-				if (e.toElement.className === "H2F__mega-menu-wrapper active") {
-					this.keepOpen = true;
-				}
-				if (!this.keepOpen) {
-					this.megaMenus.forEach((item) => {
-						this.fadeOut(item);
-					});
-				}
-			});
-			eventBus.on("nav-interact-in", (data) => {
-				const target = this.megaMenus[ data.index - 1 ];
-
-				mainNav.megaMenu.classList.add("active");
-				target.classList.add("active");
-			});
+		transitionIn (index) {
+			this.currentIndex = index;
+			this.el.classList.add("active");
 		},
-		fadeOut (item) {
-			item.classList.add("transition-out");
-			mainNav.megaMenu.classList.add("transition-out");
-			setTimeout(() => {
+		resetMenus () {
+			this.menus.forEach((item) => {
 				item.classList.remove("active");
-				item.classList.remove("transition-out");
-				mainNav.megaMenu.classList.remove("active");
-				mainNav.megaMenu.classList.remove("transition-out");
-			}, 250);
+			});
 		},
-		construct () {
-			this.keepOpen = false;
-			this.megaMenus = util.toArray(document.querySelectorAll(".H2F__mega-menu"));
-		},
-		convertToSelector (string) {
-			return `${string}-dropdown`;
+		transitionOut () {
+			if (this.menus[ this.currentIndex ]) {
+				this.menus[ this.currentIndex ].classList.remove("active");
+				this.el.classList.remove("active");
+			}
 		}
 	};
 
 	//main nav component
 	const mainNav = {
 		init () {
+			this.dropdown = dropdown;
 			this.cacheDOM();
+			this.registerListeners();
 			this.bindEvents();
+			console.log(this);
 		},
 		cacheDOM () {
-			this.megaMenu = document.querySelector(".H2F__mega-menu-wrapper");
-			this.dropdown = document.querySelector("#products-dropdown");
-			this.navItems = el.find("#h2-navigation .nav-item");
+			this.upperNavItems = document.querySelectorAll("#h2-navigation-upper .nav-item");
+			this.navItems = document.querySelectorAll("#h2-navigation .nav-item");
+			this.search = document.querySelector("a[href=\"/#search\"]");
+			this.searchBox = document.querySelector(".H2F__search-wrapper");
+			this.close = document.querySelector(".H2F__search-wrapper .close");
+			this.searchMask = document.querySelector(".H2F__search-mask");
+		},
+		registerListeners () {
+			eventBus.on("nav-interact-in", (data) => {
+				this.dropdown.transitionIn(data.index);
+			});
+			eventBus.on("nav-interact-out", () => {
+				this.dropdown.transitionOut();
+				this.resetNavItems(this.navItems);
+			});
+		},
+		resetNavItems (array) {
+			array.forEach((item) => {
+				item.classList.remove("active");
+			});
 		},
 		bindEvents () {
-			eventBus.on("reset-menu", () => {
-				document.querySelector(".H2F__mega-menu-wrapper").classList.remove("active");
-				this.navItems.forEach((item) => {
-					item.classList.remove("active");
-				});
-			});
-			this.navItems.forEach((item) => {
-				item.addEventListener("mouseenter", (e) => {
-					this.handleNavItemInteraction(e);
-				});
+			this.navItems.forEach((item, i) => {
+				// target only the first two items
+				if (i === 0 || i === 1) {
+					item.addEventListener("mouseenter", (e) => {
+						const navItem = e.currentTarget;
+						const target = navItem.querySelector("a").href.split("#")[ 1 ];
+						const index = navItem.dataset.index - 1;
+
+						if (target) {
+							this.dropdown.toggleActive(index);
+							this.resetNavItems(this.navItems);
+							navItem.classList.add("active");
+							eventBus.emit("nav-interact-in", { index });
+						}
+					});
+				}
+
 				item.addEventListener("mouseout", (e) => {
-					eventBus.emit("nav-interact-out", e);
+					if (e.toElement && !e.toElement.dataset.target) {
+						eventBus.emit("nav-interact-out", e);
+					}
 				});
 			});
-			this.megaMenu.addEventListener("mouseout", (e) => {
-				console.log(e.toElement.className);
-				//eventBus.emit("")
+			this.dropdown.el.addEventListener("mouseout", (e) => {
+				if (e.toElement && !e.toElement.dataset.target) {
+					eventBus.emit("nav-interact-out", e);
+				}
 			});
-		},
-		handleNavItemInteraction (e) {
-			const navItem = e.currentTarget;
-			const target = navItem.querySelector("a").href.split("#")[ 1 ];
-			const index = navItem.dataset.index;
+			this.search.addEventListener("click", (e) => {
+				e.preventDefault();
+				this.searchMask.classList.add("active");
+				this.searchBox.classList.add("active");
+			});
+			this.close.addEventListener("click", () => {
+				this.searchBox.classList.add("transition-out");
+				this.searchMask.classList.add("transition-out");
+				const results = document.querySelector(".search-results");
 
-			eventBus.emit("reset-menu");
-			navItem.classList.add("active");
-
-			if (target) {
-				eventBus.emit("nav-interact-in", { index });
-			}
+				results.innerHTML = "";
+				setTimeout(() => {
+					this.searchBox.classList.remove("transition-out");
+					this.searchMask.classList.remove("transition-out");
+					this.searchBox.classList.remove("active");
+					this.searchMask.classList.remove("active");
+				}, 200);
+			});
 		}
 	};
 
 	return {
-		dropdown,
 		mainNav
 	};
 };

@@ -13,7 +13,6 @@ const api = () => {
         const instance = nav(el);
 
         instance.mainNav.init();
-        instance.dropdown.init();
     });
 };
 
