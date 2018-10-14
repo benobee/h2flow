@@ -54,6 +54,7 @@ const nav = (el) => {
 			this.searchBox = document.querySelector(".H2F__search-wrapper");
 			this.close = document.querySelector(".H2F__search-wrapper .close");
 			this.searchMask = document.querySelector(".H2F__search-mask");
+			this.searchInput = document.querySelector(".H2F__search-wrapper .search-input");
 		},
 		registerListeners () {
 			eventBus.on("nav-interact-in", (data) => {
@@ -102,13 +103,13 @@ const nav = (el) => {
 				e.preventDefault();
 				this.searchMask.classList.add("active");
 				this.searchBox.classList.add("active");
+				document.body.classList.remove("search-closed");
+				this.searchInput.focus();
 			});
 			this.close.addEventListener("click", () => {
 				this.searchBox.classList.add("transition-out");
 				this.searchMask.classList.add("transition-out");
-				const results = document.querySelector(".search-results");
-
-				results.innerHTML = "";
+				document.body.classList.add("search-closed");
 				setTimeout(() => {
 					this.searchBox.classList.remove("transition-out");
 					this.searchMask.classList.remove("transition-out");
