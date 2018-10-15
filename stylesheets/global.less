@@ -1,3 +1,4 @@
+@import "./tweaks.less";
 .search-closed {
     .sqs-search-preview-ui {
         display: none;
@@ -33,9 +34,6 @@
             display: none;
         }
     }
-    @darkblue: rgb(47, 64, 124);
-    @blue: rgb(10, 96, 182);
-    @lightblue: rgb(207, 228, 248);
     .H2F__search-mask {
         display: block;
         position: fixed;
@@ -43,7 +41,7 @@
         top: 0;
         right: 0;
         bottom: 0;
-        background: rgba(255, 255, 255, 0.23);
+        background: rgba(255, 255, 255, 0.95);
         z-index: -999;
         opacity: 0;
         visibility: hidden;
@@ -66,7 +64,7 @@
         top: 0;
         right: 0;
         bottom: 0;
-        background: rgba(255, 255, 255, 0.93);
+        background: rgba(255, 255, 255, 0);
         z-index: -999;
         opacity: 0;
         visibility: hidden;
