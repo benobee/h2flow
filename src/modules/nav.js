@@ -45,11 +45,9 @@ const nav = (el) => {
 			this.cacheDOM();
 			this.registerListeners();
 			this.bindEvents();
-			console.log(this);
 		},
 		cacheDOM () {
-			this.upperNavItems = document.querySelectorAll("#h2-navigation-upper .nav-item");
-			this.navItems = document.querySelectorAll("#h2-navigation .nav-item");
+			this.navItems = document.querySelectorAll("#h2-navigation > .external.nav-item");
 			this.search = document.querySelector("a[href=\"/#search\"]");
 			this.searchBox = document.querySelector(".H2F__search-wrapper");
 			this.close = document.querySelector(".H2F__search-wrapper .close");
@@ -72,6 +70,13 @@ const nav = (el) => {
 		},
 		bindEvents () {
 			this.navItems.forEach((item, i) => {
+				item.addEventListener("click", (e) => {
+					const index = Number(e.currentTarget.dataset.index);
+
+					if (index === 1 || index === 2) {
+						e.preventDefault();
+					}
+				});
 				// target only the first two items
 				if (i === 0 || i === 1) {
 					item.addEventListener("mouseenter", (e) => {
