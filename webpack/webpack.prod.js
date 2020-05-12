@@ -1,12 +1,13 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
+const optimization = require("./util/optimization.js");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const config = merge(common, {
-    mode: 'development',
-    entry: ['../../main.js', '../../main.less'],
-    devtool: 'inline-source-map',
+const config = merge(common, optimization, {
+    mode: 'production',
+    entry: ['../main.js', '../main.less'],
+    devtool: "source-map",
     module: {
         rules: [{
             test: /\.less$/,
@@ -16,18 +17,17 @@ const config = merge(common, {
                 'less-loader',
                 {
                     loader: 'postcss-loader',
-                    options: { config: { path: './build-tools/postcss.config.js' } },
+                    options: { config: { path: './postcss.config.js' } },
                 }
             ]
         }]
     },
     plugins: [
         new webpack.DefinePlugin({
-            'process.env.NODE_ENV': JSON.stringify('development')
+            'process.env.NODE_ENV': JSON.stringify('production')
         }),
         new MiniCssExtractPlugin({
-            filename: "bundle.css",
-            chunkFilename: "[id].css"
+            filename: "bundle.css"
         })
     ],
     output: {
