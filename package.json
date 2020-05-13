@@ -4,16 +4,11 @@
     "description": "",
     "main": "main.js",
     "scripts": {
-        "start": "yarn dev:no-server",
-        "watch": "./node_modules/.bin/webpack -d --watch --colors",
-        "build": "webpack -p --config ./webpack/webpack.prod.js && yarn docs",
-        "dev": "yarn dev:server",
-        "dev:server": "webpack-dev-server ./main.js --hot --watch --colors --open --config ./webpack/webpack.dev.js",
-        "dev:no-server": "webpack --progress --colors --watch --open --config ./webpack/webpack.dev.js",
-        "debug": "node --inspect --debug-brk ./main.js",
-        "sqs": "squarespace-server https://gavin-hackett-jedg.squarespace.com --auth -d ../template",
+        "server": "webpack-dev-server ./main.js --hot --watch --colors --open --config ./webpack/webpack.dev.js",
+        "dev": "webpack --progress --colors --watch --open --config ./webpack/webpack.dev.js",
+        "sqs": "squarespace-server https://gavin-hackett-jedg.squarespace.com --auth --verbose -d ../template",
         "docs": "documentation build --output ./README.md --format md",
-        "analyze": "npm run build --env.presets analyze"
+        "prod": "webpack -p --config ./webpack/webpack.prod.js && yarn docs"
     },
     "author": "Ben Obee",
     "license": "ISC",
@@ -27,6 +22,7 @@
         "babel-minify-webpack-plugin": "^0.3.1",
         "babel-plugin-transform-runtime": "^6.23.0",
         "babel-polyfill": "^6.23.0",
+        "browserslist": "^4.12.0",
         "compression-webpack-plugin": "^3.1.0",
         "concurrently": "^5.2.0",
         "css-loader": "^3.5.3",
@@ -52,6 +48,7 @@
         "less-loader": "^6.1.0",
         "mini-css-extract-plugin": "^0.9.0",
         "npm-run-parallel": "^0.6.0",
+        "optimize-css-assets-webpack-plugin": "^5.0.3",
         "path": "^0.12.7",
         "postcss-loader": "^3.0.0",
         "postcss-smart-import": "^0.7.6",
@@ -65,5 +62,9 @@
     },
     "dependencies": {
         "component-literal": "^1.5.3"
-    }
+    },
+    "browserslist": [
+        "> 1%",
+        "last 2 versions"
+    ]
 }

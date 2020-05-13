@@ -1,12 +1,12 @@
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
-const optimization = require("./util/optimization.js");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
-const config = merge(common, optimization, {
+const config = merge(common, {
     mode: 'production',
-    entry: ['../main.js', '../main.less'],
+    entry: ['../main.js'],
     devtool: "source-map",
     module: {
         rules: [{
@@ -28,7 +28,8 @@ const config = merge(common, optimization, {
         }),
         new MiniCssExtractPlugin({
             filename: "bundle.css"
-        })
+        }),
+        new OptimizeCssAssetsPlugin()
     ],
     output: {
         publicPath: '/',

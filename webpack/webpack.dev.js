@@ -5,7 +5,7 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const config = merge(common, {
     mode: 'development',
-    entry: ['../main.js', '../main.less'],
+    entry: ['../main.js'],
     devtool: 'inline-source-map',
     module: {
         rules: [{
