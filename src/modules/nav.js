@@ -24,6 +24,7 @@ const nav = (el) => {
 		transitionIn (index) {
 			this.currentIndex = index;
 			this.el.classList.add("active");
+			this.el.dataset.activeIndex = index;
 		},
 		resetMenus () {
 			this.menus.forEach((item) => {
@@ -34,6 +35,7 @@ const nav = (el) => {
 			if (this.menus[ this.currentIndex ]) {
 				this.menus[ this.currentIndex ].classList.remove("active");
 				this.el.classList.remove("active");
+				delete this.el.dataset.activeIndex;
 			}
 		}
 	};
@@ -47,7 +49,8 @@ const nav = (el) => {
 			this.bindEvents();
 		},
 		cacheDOM () {
-			this.navItems = document.querySelectorAll("#h2-navigation > .external.nav-item");
+			this.mainNavWrapper = document.querySelector(".H2F.H2F__navigation-wrapper");
+			this.navItems = document.querySelectorAll("#h2-navigation > .nav-item");
 			this.search = document.querySelector("a[href=\"/#search\"]");
 			this.searchBox = document.querySelector(".H2F__search-wrapper");
 			this.close = document.querySelector(".H2F__search-wrapper .close");
@@ -70,15 +73,12 @@ const nav = (el) => {
 		},
 		bindEvents () {
 			this.navItems.forEach((item, i) => {
-				item.addEventListener("click", (e) => {
-					const index = Number(e.currentTarget.dataset.index);
-
-					if (index === 1 || index === 2) {
-						e.preventDefault();
-					}
-				});
 				// target only the first two items
 				if (i === 0 || i === 1) {
+					item.addEventListener("click", (e) => {
+						e.preventDefault();
+					});
+					item.dataset.megaItem = true;
 					item.addEventListener("mouseenter", (e) => {
 						const navItem = e.currentTarget;
 						const target = navItem.querySelector("a").href.split("#")[ 1 ];
@@ -92,16 +92,19 @@ const nav = (el) => {
 						}
 					});
 				}
-
-				item.addEventListener("mouseout", (e) => {
-					if (e.toElement && !e.toElement.dataset.target) {
-						eventBus.emit("nav-interact-out", e);
+				item.addEventListener("mouseenter", (e) => {
+					if (!e.target.dataset.megaItem) {
+						eventBus.emit("nav-interact-out");
 					}
 				});
 			});
-			this.dropdown.el.addEventListener("mouseout", (e) => {
-				if (e.toElement && !e.toElement.dataset.target) {
-					eventBus.emit("nav-interact-out", e);
+			this.mainNavWrapper.addEventListener("mouseenter", () => {
+				this.menuInteracting = true;
+			});
+			window.addEventListener("mouseout", (e) => {
+				if (!e.target.closest("#h2flow-main-nav")) {
+					this.menuInteracting = false;
+					eventBus.emit("nav-interact-out");
 				}
 			});
 			this.search.addEventListener("click", (e) => {
