@@ -6,7 +6,7 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
         stateData,
         fixedPumpRPMValues: fixedPumpRPMValues.reverse(),
         poolSizeElementId: "pool-size",
-        poolSizeValue: 25,
+        poolSizeValue: 15,
         additionalFeaturesChecked: false,
         stateValue: null,
         monthValue: null,
@@ -192,7 +192,6 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             } else {
                 rpm = 1500;
             }
-            console.log(data);
             return rpm;
         },
         calculateAnnualCostByRPM (rpmValue) {
