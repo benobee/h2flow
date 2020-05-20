@@ -28,7 +28,6 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             this.bindEvents();
             this.initializeDropDowns();
             this.setInitialValues();
-            console.log(fixedPumpRPMValues);
         },
         cacheDOM () {
             this.formElements = toArray(this.el.querySelectorAll("[data-form-element]"));
@@ -70,13 +69,12 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                 })
                 .on("slider-value-change", (props) => {
                     if (props.id === POOL_SIZE_ELEMENT_ID) {
-                        const fixedPumpRPM = this.getRPMfromSize(Number(props.value));
+                        const fixedPumpRPM = this.getRPMfromSize(Number(appState.poolSizeValue));
                         const pumpData = this.getDataByRPM(fixedPumpRPM);
                         const targetIndex = pumpData.index - 4;
 
                         this.setAppState({
                             poolSizeValue: props.value,
-                            fixedPumpRPM,
                             variablePumpRPM: fixedPumpRPMValues[ targetIndex ].RPMSpeed,
                             variablePumpRPMValue: targetIndex
                         });
@@ -120,18 +118,19 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                 });
         },
         render () {
+            console.log("rendering...");
             const fixedAnnualCostTarget = this.getRenderTargetById("fixed-annual-cost");
             const fixedPumpRPMElement = this.getRenderTargetById("fixed-pump-rpm");
             const variablePumpRPMElement = this.getRenderTargetById("variable-pump-rpm");
             const variableAnnualCostTarget = this.getRenderTargetById("variable-cost");
             const variableSavingsTarget = this.getRenderTargetById("variable-savings");
-            const computedCosts = this.getComputedCosts();
+            const computedValues = this.getComputedValues();
 
             fixedPumpRPMElement.innerText = this.formatNumberWithComma(appState.fixedPumpRPM);
-            fixedAnnualCostTarget.innerText = this.formatDollar(computedCosts.fixedAnnualCost);
+            fixedAnnualCostTarget.innerText = this.formatDollar(computedValues.fixedAnnualCost);
             variablePumpRPMElement.innerText = this.formatNumberWithComma(appState.variablePumpRPM);
-            variableAnnualCostTarget.innerText = this.formatDollar(computedCosts.variableAnnualCost);
-            variableSavingsTarget.innerText = this.formatDollar(Math.max(0, computedCosts.fixedAnnualCost - computedCosts.variableAnnualCost));
+            variableAnnualCostTarget.innerText = this.formatDollar(computedValues.variableAnnualCost);
+            variableSavingsTarget.innerText = this.formatDollar(Math.max(0, computedValues.fixedAnnualCost - computedValues.variableAnnualCost));
         },
         setAppState (props) {
             Object.keys(props).forEach((key) => {
@@ -139,11 +138,14 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             });
             events.emit("app-update", props);
         },
-        getComputedCosts () {
-            if (appState.fixedPumpRPM && appState.variablePumpRPM) {
+        getComputedValues () {
+            if (appState.fixedPumpRPM && appState.variablePumpRPM && appState.poolSizeValue) {
+                const fixedPumpRPM = this.getRPMfromSize(Number(appState.poolSizeValue));
+
                 return {
                     fixedAnnualCost: this.calculateAnnualCostByRPM(appState.fixedPumpRPM),
-                    variableAnnualCost: this.calculateAnnualCostByRPM(appState.variablePumpRPM)
+                    variableAnnualCost: this.calculateAnnualCostByRPM(appState.variablePumpRPM),
+                    fixedPumpRPM
                 };
             }
         },
