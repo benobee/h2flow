@@ -72,14 +72,19 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                 })
                 .on("slider-value-change", (props) => {
                     if (props.id === data.poolSizeElementId) {
-                        data.poolSizeValue = props.value;
+                        this.setData({
+                            poolSizeValue: props.value
+                        });
                         this.changeImageSize(props.value);
                         this.renderSliderValue(props.id, props.value * 1000);
                     } else if (props.id === data.variablePumpRPMElementId) {
-                        data.variablePumpRPMValue = props.value;
-                        data.variablePumpRPM = data.fixedPumpRPMValues[ props.value ] ? data.fixedPumpRPMValues[ props.value ].RPMSpeed : null;
+                        const variablePumpRPM = data.fixedPumpRPMValues[ props.value ] ? data.fixedPumpRPMValues[ props.value ].RPMSpeed : null;
+
+                        this.setData({
+                            variablePumpRPMValue: props.value,
+                            variablePumpRPM
+                        });
                     }
-                    events.emit("app-update");
                 })
                 .on("checkbox-value-change", (props) => {
                     this.setData({
