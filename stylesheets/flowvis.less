@@ -1,0 +1,204 @@
+@blue: #142566;
+@lightBlue: #2C7CBF;
+
+.index-section{
+   position:relative;
+}
+.instructions{
+  p{
+    opacity:0.9;
+    font-size:12px;
+  }
+}
+
+  .flowvis-slider-wrapper{
+    flex:1 1 25em;
+    .slider-range-labels,
+    .slider-range-label-marks{
+      margin-bottom:0.5em;
+      list-style-type:none;
+      padding:0;
+      display:flex;
+      justify-content:space-between;
+    }
+    .slider-range-label-marks{
+      li{
+        flex: 1 1 auto;
+        height: 20px;
+        opacity: 0.5;
+      }
+    }
+    .flowvis-slider{
+      -webkit-appearance: none;  /* Override default CSS styles */
+      appearance: none;
+      width: 100%; /* Full-width */
+      height: 10px; /* Specified height */
+      background: #e2e2e2; /* Grey background */
+      outline: none; /* Remove outline */
+      opacity: 0.7; /* Set transparency (for mouse-over effects on hover) */
+      -webkit-transition: .2s; /* 0.2 seconds transition on hover */
+      transition: opacity .2s;
+      &:hover{
+        opacity:1;
+      }
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none; /* Override default look */
+        appearance: none;
+        width: 10px; /* Set a specific slider handle width */
+        height: 40px; /* Slider handle height */
+        background: @lightBlue;
+        cursor: pointer; /* Cursor on hover */
+        border-radius:2px;
+        margin-left:0;
+      }
+      &::-moz-range-thumb {
+        width:10px; /* Set a specific slider handle width */
+        height: 40px; /* Slider handle height */
+        background: @lightBlue; /* Green background */
+        cursor: pointer; /* Cursor on hover */
+      }
+    }
+  }
+
+.flowvis-widget{
+  .flowvis-ui-wrapper{
+    display:flex;
+    width:100%;
+    align-items:center;
+    justify-content:space-around;
+    .flowvis-stat{
+      flex:1 1 15em;
+      padding-left:1em;
+  	}
+    margin-bottom:1em;
+  }
+  .flowvis-stats{
+    display:flex;
+  }
+  .flowvis-stat{
+    flex:1 1 20em;
+    &.positive{
+      .data{
+        color:#53db60;
+      }
+    }
+  }
+  .data{
+      color:white;
+      font-size:3.5em;
+      font-weight:600;
+      font-family: proxima-nova;
+      letter-spacing: 1px;
+  }
+  .label{
+      color:white;
+      font-size:1.3em;
+      line-height:1vw;
+  } 
+}
+
+.banner-overlay-content{
+  display:flex;
+  align-items:center;
+  height:100%;
+  .page-content{
+     flex:1 1 auto;
+  }
+  p{
+    color:white;
+  }
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  .sqs-layout{
+      z-index:999;
+      h2{
+        color:white;
+        font-size:2.8vw;
+        line-height:3.5vw;
+        font-weight:200;
+  	  }
+  }
+}
+#collection-5ebc3715f54aff11d5b1c6a1{
+  .desc-wrapper{
+    display:none;
+  }
+  .promoted-gallery-wrapper, .color-overlay{
+    display:none !important;
+    background:none !important;
+  }
+  .banner-thumbnail-wrapper{
+	  padding:0;
+  }
+  @media screen and (min-width:1025px){
+     #thumbnail{
+      background:white;
+      position:static !important;
+      img{
+        width:100% !important;
+        height:auto !important;
+        right:0 !important;
+        top:0 !important;
+        left:0 !important;
+      }
+    }
+  }
+  @media screen and (max-width:1024px){
+    .banner-thumbnail-wrapper{
+      display:block;
+    }
+     #thumbnail{
+      background:white;
+      position:static !important;
+      img{
+        width:auto !important;
+        height:100% !important;
+      }
+    }
+  }
+  .index-section{
+    h1{
+      background:@blue;
+      color:white;
+      display:inline-block;
+      padding:0.5em;
+      position:relative;
+      &:after{
+        content:"";
+        position:absolute;
+        background:@blue;
+        height:110px;
+        left:-500px;
+        top:0;
+        width:500px;
+        @media screen and (max-width:1024px) {
+        display:none;
+      }
+      }
+    }
+    .color-overlay{
+      display:none;
+    }
+    ol{
+      > li:nth-child(1),
+      > li:nth-child(2){
+        margin-bottom:4em;
+      }
+    }
+
+    &#savings-per-year{
+      .index-section-wrapper{
+        padding-top:0px;
+      }
+      .banner-overlay-content{
+        margin-top:-4vw;
+      }
+    }
+  }
+
+  ol{
+    padding-left:0;
+  }
+}

@@ -10,6 +10,7 @@ class PubSub {
 
         // add the listener
         this.topics[ topic ].push(listener);
+        return this;
     }
     emit (topic, data) {
         // return if the topic doesn't exist, or there are no listeners

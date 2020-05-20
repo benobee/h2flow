@@ -2,7 +2,7 @@ const rules = {
     module: {
         rules: [{
             enforce: 'pre',
-            test: /\.js$/,
+            test: /\.(js|jsx)$/,
             exclude: /node_modules/,
             use: [
                 "babel-loader",

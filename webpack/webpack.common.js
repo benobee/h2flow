@@ -1,6 +1,6 @@
 const merge = require('webpack-merge');
-const rules = require("./util/rules.js");
-const plugins = require("./util/plugins.js")
+const rules = require("./rules.js");
+const plugins = require("./plugins.js")
 
 const config = merge(rules, {
     context: __dirname,

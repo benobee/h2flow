@@ -1,22 +1,16 @@
 import PubSub from "../core/pubsub";
+import { toArray } from "../common/util";
 
 const nav = (el) => {
 
 	// event bus
 	const eventBus = new PubSub();
 
-	// util methods
-	const util = {
-		toArray (nodeList) {
-			return [].slice.call(nodeList);
-		}
-	};
-
 	// dropdown component
 	const dropdown = {
 		keepOpen: false,
 		el: el.find(".H2F__mega-menu-wrapper")[ 0 ],
-		menus: util.toArray(document.querySelectorAll(".H2F__mega-menu")),
+		menus: toArray(document.querySelectorAll(".H2F__mega-menu")),
 		toggleActive (index) {
 			this.resetMenus();
 			this.menus[ index ].classList.add("active");

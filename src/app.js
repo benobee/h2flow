@@ -16,6 +16,11 @@ const App = {
             name: "navigation",
             el: "#h2flow-main-nav"
         }]);
+
+        controller.watch([{
+            name: "flowvis-calculator-page",
+            el: "#collection-5ebc3715f54aff11d5b1c6a1"
+        }]);
     }
 };
 
