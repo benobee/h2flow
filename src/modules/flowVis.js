@@ -2,22 +2,22 @@ import PubSub from "../core/pubsub";
 import { toArray } from "../common/util";
 
 const flowVis = (el, stateData, fixedPumpRPMValues) => {
-    const data = {
-        stateData,
-        fixedPumpRPMValues: fixedPumpRPMValues.reverse(),
-        poolSizeElementId: "pool-size",
+    fixedPumpRPMValues = fixedPumpRPMValues.reverse().map((item, index) => {
+        item.index = index;
+        return item;
+    });
+    const FIXED_VALUE_PUMP_SIZE = 2.2;
+    const RUN_HOURS_PER_MONTH = 720;
+    const VARIABLE_PUMP_ELEMENT_ID = "variable-pump-rpm";
+    const POOL_SIZE_ELEMENT_ID = "pool-size";
+    const appState = {
         poolSizeValue: 15,
         additionalFeaturesChecked: false,
         stateValue: null,
         monthValue: null,
         fixedPumpRPM: 1500,
-        fixedAnnualCost: null,
         variablePumpRPM: 2500,
-        variablePumpRPMElementId: "variable-pump-rpm",
-        variablePumpRPMValue: 14,
-        variableAnnualCost: null,
-        runHoursPerMonth: 720,
-        fixedValuePumpSize: 2.2
+        variablePumpRPMValue: 14
     };
     const events = new PubSub();
     const calculator = {
@@ -28,6 +28,7 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             this.bindEvents();
             this.initializeDropDowns();
             this.setInitialValues();
+            console.log(fixedPumpRPMValues);
         },
         cacheDOM () {
             this.formElements = toArray(this.el.querySelectorAll("[data-form-element]"));
@@ -63,48 +64,55 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
         registerListeners () {
             events
                 .on("app-update", () => {
-                    if (data.stateValue && data.monthValue) {
-                        data.fixedPumpRPM = this.getRPMfromSize(Number(data.poolSizeValue));
-                        data.fixedAnnualCost = this.calculateAnnualCostByRPM(data.fixedPumpRPM);
-                        data.variableAnnualCost = this.calculateAnnualCostByRPM(data.variablePumpRPM);
+                    if (appState.stateValue && appState.monthValue) {
                         this.render();
                     }
                 })
                 .on("slider-value-change", (props) => {
-                    if (props.id === data.poolSizeElementId) {
-                        this.setData({
-                            poolSizeValue: props.value
+                    if (props.id === POOL_SIZE_ELEMENT_ID) {
+                        const fixedPumpRPM = this.getRPMfromSize(Number(props.value));
+                        const pumpData = this.getDataByRPM(fixedPumpRPM);
+                        const targetIndex = pumpData.index - 4;
+
+                        this.setAppState({
+                            poolSizeValue: props.value,
+                            fixedPumpRPM,
+                            variablePumpRPM: fixedPumpRPMValues[ targetIndex ].RPMSpeed,
+                            variablePumpRPMValue: targetIndex
                         });
                         this.changeImageSize(props.value);
                         this.renderSliderValue(props.id, props.value * 1000);
-                    } else if (props.id === data.variablePumpRPMElementId) {
-                        const variablePumpRPM = data.fixedPumpRPMValues[ props.value ] ? data.fixedPumpRPMValues[ props.value ].RPMSpeed : null;
+                        this.setSliderValue(VARIABLE_PUMP_ELEMENT_ID, targetIndex);
+                    } else if (props.id === VARIABLE_PUMP_ELEMENT_ID) {
+                        const variablePumpRPM = this.getDataByIndex(props.value) ?
+                            this.getDataByIndex(props.value).RPMSpeed :
+                            null;
 
-                        this.setData({
+                        this.setAppState({
                             variablePumpRPMValue: props.value,
                             variablePumpRPM
                         });
                     }
                 })
                 .on("checkbox-value-change", (props) => {
-                    this.setData({
+                    this.setAppState({
                         additionalFeaturesChecked: props.value
                     });
                 })
                 .on("dropdown-value-change", (props) => {
                     switch (props.id) {
                         case "state":
-                            this.setData({
+                            this.setAppState({
                                 stateValue: props.value
                             });
                             break;
                         case "months":
-                            this.setData({
+                            this.setAppState({
                                 monthValue: props.value
                             });
                             break;
                         default:
-                            this.setData({
+                            this.setAppState({
                                 stateValue: null,
                                 monthValue: 0
                             });
@@ -117,34 +125,43 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             const variablePumpRPMElement = this.getRenderTargetById("variable-pump-rpm");
             const variableAnnualCostTarget = this.getRenderTargetById("variable-cost");
             const variableSavingsTarget = this.getRenderTargetById("variable-savings");
+            const computedCosts = this.getComputedCosts();
 
-            fixedPumpRPMElement.innerText = this.formatNumberWithComma(data.fixedPumpRPM);
-            fixedAnnualCostTarget.innerText = this.formatDollar(Math.round(data.fixedAnnualCost));
-            variablePumpRPMElement.innerText = this.formatNumberWithComma(data.variablePumpRPM);
-            variableAnnualCostTarget.innerText = this.formatDollar(Math.round(data.variableAnnualCost));
-            variableSavingsTarget.innerText = this.formatDollar(Math.max(0, data.fixedAnnualCost - data.variableAnnualCost));
+            fixedPumpRPMElement.innerText = this.formatNumberWithComma(appState.fixedPumpRPM);
+            fixedAnnualCostTarget.innerText = this.formatDollar(computedCosts.fixedAnnualCost);
+            variablePumpRPMElement.innerText = this.formatNumberWithComma(appState.variablePumpRPM);
+            variableAnnualCostTarget.innerText = this.formatDollar(computedCosts.variableAnnualCost);
+            variableSavingsTarget.innerText = this.formatDollar(Math.max(0, computedCosts.fixedAnnualCost - computedCosts.variableAnnualCost));
         },
-        setData (props) {
+        setAppState (props) {
             Object.keys(props).forEach((key) => {
-                data[ key ] = props[ key ];
+                appState[ key ] = props[ key ];
             });
             events.emit("app-update", props);
         },
+        getComputedCosts () {
+            if (appState.fixedPumpRPM && appState.variablePumpRPM) {
+                return {
+                    fixedAnnualCost: this.calculateAnnualCostByRPM(appState.fixedPumpRPM),
+                    variableAnnualCost: this.calculateAnnualCostByRPM(appState.variablePumpRPM)
+                };
+            }
+        },
         setInitialValues () {
             events.emit("slider-value-change", {
-                value: data.poolSizeValue,
-                id: data.poolSizeElementId
+                value: appState.poolSizeValue,
+                id: POOL_SIZE_ELEMENT_ID
             });
             events.emit("slider-value-change", {
-                value: data.variablePumpRPMValue,
-                id: data.variablePumpRPMElementId
+                value: appState.variablePumpRPMValue,
+                id: VARIABLE_PUMP_ELEMENT_ID
             });
         },
         initializeDropDowns () {
             const stateDropdown = this.getFormElementById("state");
             const monthDropdown = this.getFormElementById("months");
 
-            data.stateData.forEach((item) => {
+            stateData.forEach((item) => {
                 const optionElement = document.createElement("option");
 
                 optionElement.value = item.KWPH.value;
@@ -166,6 +183,9 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
 
             target.innerHTML = this.formatNumberWithComma(value);
         },
+        setSliderValue (id, value) {
+            this.getFormElementById(id).value = value;
+        },
         changeImageSize (value) {
             // using value 300 for smoother scaling
             this.poolImageElement.style.transform = `scale(${0.8 + (value / 300)})`;
@@ -180,18 +200,21 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,");
         },
         formatDollar (monetaryValue) {
-            return Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumSignificantDigits: 4 }).format(monetaryValue);
+            return Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0 }).format(Math.round(monetaryValue));
         },
         getDataByRPM (rpm) {
-            return data.fixedPumpRPMValues.find((item) => item.RPMSpeed === rpm);
+            return fixedPumpRPMValues.find((item) => item.RPMSpeed === rpm);
+        },
+        getDataByIndex (index) {
+            return fixedPumpRPMValues[ index ];
         },
         getRPMfromSize (poolSize) {
             let rpm = 0;
 
             if (poolSize <= 19) {
-                rpm = data.additionalFeaturesChecked ? 2400 : 1500;
+                rpm = appState.additionalFeaturesChecked ? 2400 : 1500;
             } else if (poolSize > 19 && poolSize <= 29) {
-                rpm = data.additionalFeaturesChecked ? 3100 : 2400;
+                rpm = appState.additionalFeaturesChecked ? 3100 : 2400;
             } else if (poolSize > 29) {
                 rpm = 3100;
             } else {
@@ -202,7 +225,7 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
         calculateAnnualCostByRPM (rpmValue) {
             const rpmData = this.getDataByRPM(rpmValue);
 
-            return data.fixedValuePumpSize * data.stateValue * (data.monthValue * 720) * rpmData.affinityLawValue;
+            return FIXED_VALUE_PUMP_SIZE * appState.stateValue * (appState.monthValue * RUN_HOURS_PER_MONTH) * rpmData.affinityLawValue;
         }
     };
 
