@@ -1,0 +1,83 @@
+<!-- about slider widget -->
+<div class="flowvis-widget" data-form-id="about-your-pool">
+    <ol class="flowvis-list">
+      <li class="flowvis-list-item">
+        <select class="flowvis-ui-select" data-form-element="state">
+           <option>Select Your State</option>
+      </li>
+      <li class="flowvis-list-item">
+        <select class="flowvis-ui-select" data-form-element="months">
+           <option value="0">Annual months of operation</option>
+      </li>
+        <li class="flowvis-list-item">
+      <div class="flowvis-ui-wrapper">
+        <div class="flowvis-slider-wrapper">
+          <ul class="slider-range-labels">
+            <li>SMALL</li>
+            <li>MEDIUM</li>
+            <li>LARGE</li>
+          </ul>
+          <input type="range" min="0" max="50" value="15" class="flowvis-slider" step="1" data-form-element="pool-size">
+        </div>
+      </div>
+      <label><strong>POOL SIZE: </strong><span data-render-target="pool-size">15,000</span> U.S. gallons</label>
+        <div class="form-elment">
+          <input id="spa-or-water-features" class="flowvis-checkbox" type="checkbox" data-form-element="additional-features">
+          <label for="spa-or-water-features">system includes attached spa or water features</label>
+        </div>
+      </li>
+    </ol>
+</div>
+
+<!-- about banner  -->
+<div class="flowvis-widget">
+  <h2>COST PER YEAR WITHOUT AN ACCURATE FLOW METER</h2>
+  <div class="flowvis-stats">
+    <div class="flowvis-stat">
+      <div class="data" data-render-target="fixed-pump-rpm">----</div>
+      <p class="label">
+        PUMP RPM
+      </p>
+    </div>
+    <div class="flowvis-stat">
+      <div class="data" data-render-target="fixed-annual-cost">----</div>
+      <p class="label">
+        ANNUAL COST
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- savings flowvis widget -->
+<div class="flowvis-widget" data-form-id="savings-per-year">
+    <h2>SAVINGS PER YEAR WITH FLOWVIS®</h2>
+    <div class="flowvis-ui-wrapper">
+      <div class="flowvis-slider-wrapper">
+          <input data-form-element="variable-pump-rpm" type="range" min="0" max="21" value="14" class="flowvis-slider" step="1">
+      </div>
+      <div class="flowvis-stat">
+          <div class="data" data-render-target="variable-pump-rpm">----</div>
+          <p class="label">PUMP RPM</p>
+       </div>
+        </div>
+        <div class="instructions">
+          <p>
+            Drag the cursor in the ‘Pump RPM’ slider above to see examples of how much additional money you could be saving by using a flow meter!
+          </p>
+        </div>
+       <div class="flowvis-stats">
+           <div class="flowvis-stat">
+            <div class="data" data-render-target="variable-cost">----</div>
+            <p class="label">
+              ANNUAL COST
+            </p>
+         </div>
+         <div class="flowvis-stat positive">
+            <div class="data" data-render-target="variable-savings">----</div>
+            <p class="label">
+              ANNUAL SAVINGS
+            </p>
+         </div>
+      </div>
+  </div>
+  
