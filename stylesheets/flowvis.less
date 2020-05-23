@@ -1,14 +1,7 @@
 @blue: #142566;
 @lightBlue: #2C7CBF;
 
-.instructions{
-  p{
-    opacity:0.9;
-    font-size:12px;
-  }
-}
-
-  .flowvis-slider-wrapper{
+.flowvis-slider-wrapper{
     flex:1 1 25em;
     .slider-range-labels,
     .slider-range-label-marks{
@@ -58,7 +51,6 @@
   }
 
 .flowvis-widget{
-  margin:1em;
   .flowvis-ui-wrapper{
     display:flex;
     width:100%;
@@ -102,11 +94,46 @@
 }
 
 #collection-5ebc3715f54aff11d5b1c6a1{
-  #about-your-pool{
-    .flowvis-widget{
-      margin:1em;
+  .desc-wrapper{
+    margin-top:52px;
+    margin-bottom:52px;
+    > p {
+      height:0;
+      overflow:hidden;
+      margin:0;
     }
   }
+  .instructions{
+    p{
+      opacity:0.9;
+    }
+  }
+
+  .banner-thumbnail-wrapper.has-description{
+    background:white;
+    padding-top:0;
+    padding-bottom:0;
+    *{
+      text-align:left;
+    }
+    p{
+      font-size:1em;
+      font-weight:200;
+      color:white;
+    }
+    h2{
+      color:white;
+      font-weight:300;
+      @media screen and (min-width:1025px) and (max-width:1799px){
+        font-size:2.8vw;
+        line-height:3.5vw;
+      }
+      @media screen and (min-width:1025px) and (min-width:1800px){
+        font-size:3em;
+      }
+    }
+  }
+
   .index-section{
     h1{
       background:@blue;
@@ -131,29 +158,36 @@
       display:none;
     }
     ol{
+      padding-left:0;
       > li:nth-child(1),
       > li:nth-child(2){
         margin-bottom:4em;
       }
     }
-
+    &#about-your-pool{
+      .flowvis-widget{
+        margin:1em;
+      }
+    }
     &#savings-per-year{
       .index-section-wrapper{
         padding-top:0px;
       }
+      .desc-wrapper{
+        margin-top:-2em;
+      }
+    }
+    &#flowvis-disclaimer{
+      background:@blue;
+      color:white;
+      .page-content{
+          padding-top:2.5em;
+          padding-bottom:2.5em;
+      }
+      .sqs-layout{
+        min-height:0;
+      }
+      margin-bottom:3em;
     }
   }
-  ol{
-    padding-left:0;
-  }
-}
-
-#flowvis-disclaimer{
-  background:@blue;
-  color:white;
-  .page-content{
-      padding-top:2.5em;
-      padding-bottom:2.5em;
-  }
-  margin-bottom:3em;
 }
