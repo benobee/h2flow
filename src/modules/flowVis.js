@@ -1,5 +1,5 @@
 import PubSub from "../core/pubsub";
-import { toArray } from "../common/util";
+import { toArray, loadAllImages } from "../common/util";
 
 const flowVis = (el, stateData, fixedPumpRPMValues) => {
     fixedPumpRPMValues = fixedPumpRPMValues.reverse().map((item, index) => {
@@ -33,7 +33,7 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
         cacheDOM () {
             this.formElements = toArray(this.el.querySelectorAll("[data-form-element]"));
             this.renderTargets = toArray(this.el.querySelectorAll("[data-render-target]"));
-            this.poolImageElement = this.el.querySelector("img[src*='Water_Drop']").parentNode;
+            this.poolImageElement = this.el.querySelector("img[data-image-id='5ebde14e4f31054b8693baad']").parentNode;
         },
         bindEvents () {
             this.formElements.forEach((item) => {
@@ -66,10 +66,11 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
 
             banners.forEach((banner) => {
                 const target = banner.querySelector(".desc-wrapper");
-                const content = banner.querySelector(".banner-overlay-content .page-content .sqs-layout");
+                const content = banner.querySelector(".banner-overlay-content .page-content-wrapper");
 
                 target.append(content);
             });
+            loadAllImages();
         },
         registerListeners () {
             events
@@ -202,7 +203,11 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             target.innerHTML = this.formatNumberWithComma(value);
         },
         setSliderValue (id, value) {
-            this.getFormElementById(id).value = value;
+            const target = this.getFormElementById(id);
+
+            if (target) {
+                target.value = value;
+            }
         },
         changeImageSize (value) {
             // using value 300 for smoother scaling
