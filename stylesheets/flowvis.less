@@ -1,9 +1,6 @@
 @blue: #142566;
 @lightBlue: #2C7CBF;
 
-.index-section{
-   position:relative;
-}
 .instructions{
   p{
     opacity:0.9;
@@ -61,6 +58,7 @@
   }
 
 .flowvis-widget{
+  margin:1em;
   .flowvis-ui-wrapper{
     display:flex;
     width:100%;
@@ -89,73 +87,24 @@
       font-weight:600;
       font-family: proxima-nova;
       letter-spacing: 1px;
+      @media screen and (max-width:768px) {
+        font-size:2.2em;
+      }
   }
   .label{
       color:white;
       font-size:1.3em;
       line-height:1vw;
+      @media screen and (max-width:768px) {
+        font-size:1em;
+      }
   } 
 }
 
-.banner-overlay-content{
-  display:flex;
-  align-items:center;
-  height:100%;
-  .page-content{
-     flex:1 1 auto;
-  }
-  p{
-    color:white;
-  }
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  .sqs-layout{
-      z-index:999;
-      h2{
-        color:white;
-        font-size:2.8vw;
-        line-height:3.5vw;
-        font-weight:200;
-  	  }
-  }
-}
 #collection-5ebc3715f54aff11d5b1c6a1{
-  .desc-wrapper{
-    display:none;
-  }
-  .promoted-gallery-wrapper, .color-overlay{
-    display:none !important;
-    background:none !important;
-  }
-  .banner-thumbnail-wrapper{
-	  padding:0;
-  }
-  @media screen and (min-width:1025px){
-     #thumbnail{
-      background:white;
-      position:static !important;
-      img{
-        width:100% !important;
-        height:auto !important;
-        right:0 !important;
-        top:0 !important;
-        left:0 !important;
-      }
-    }
-  }
-  @media screen and (max-width:1024px){
-    .banner-thumbnail-wrapper{
-      display:block;
-    }
-     #thumbnail{
-      background:white;
-      position:static !important;
-      img{
-        width:auto !important;
-        height:100% !important;
-      }
+  #about-your-pool{
+    .flowvis-widget{
+      margin:1em;
     }
   }
   .index-section{
@@ -174,8 +123,8 @@
         top:0;
         width:500px;
         @media screen and (max-width:1024px) {
-        display:none;
-      }
+          display:none;
+        }
       }
     }
     .color-overlay{
@@ -192,12 +141,8 @@
       .index-section-wrapper{
         padding-top:0px;
       }
-      .banner-overlay-content{
-        margin-top:-4vw;
-      }
     }
   }
-
   ol{
     padding-left:0;
   }

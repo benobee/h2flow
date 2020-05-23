@@ -26,6 +26,7 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
             this.cacheDOM();
             this.registerListeners();
             this.bindEvents();
+            this.injectContentToBanner();
             this.initializeDropDowns();
             this.setInitialValues();
         },
@@ -60,6 +61,16 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                 }
             });
         },
+        injectContentToBanner () {
+            const banners = this.el.querySelectorAll(".banner-thumbnail-wrapper");
+
+            banners.forEach((banner) => {
+                const target = banner.querySelector(".desc-wrapper");
+                const content = banner.querySelector(".banner-overlay-content .page-content .sqs-layout");
+
+                target.append(content);
+            });
+        },
         registerListeners () {
             events
                 .on("app-update", () => {
@@ -69,18 +80,12 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                 })
                 .on("slider-value-change", (props) => {
                     if (props.id === POOL_SIZE_ELEMENT_ID) {
-                        const fixedPumpRPM = this.getRPMfromSize(Number(appState.poolSizeValue));
-                        const pumpData = this.getDataByRPM(fixedPumpRPM);
-                        const targetIndex = pumpData.index - 4;
-
                         this.setAppState({
                             poolSizeValue: props.value,
-                            variablePumpRPM: fixedPumpRPMValues[ targetIndex ].RPMSpeed,
-                            variablePumpRPMValue: targetIndex
                         });
                         this.changeImageSize(props.value);
                         this.renderSliderValue(props.id, props.value * 1000);
-                        this.setSliderValue(VARIABLE_PUMP_ELEMENT_ID, targetIndex);
+                        this.setSuggestedVariableRPM();
                     } else if (props.id === VARIABLE_PUMP_ELEMENT_ID) {
                         const variablePumpRPM = this.getDataByIndex(props.value) ?
                             this.getDataByIndex(props.value).RPMSpeed :
@@ -96,6 +101,7 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                     this.setAppState({
                         additionalFeaturesChecked: props.value
                     });
+                    this.setSuggestedVariableRPM();
                 })
                 .on("dropdown-value-change", (props) => {
                     switch (props.id) {
@@ -178,6 +184,17 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                 optionElement.innerText = index;
                 monthDropdown.append(optionElement);
             }
+        },
+        setSuggestedVariableRPM () {
+            const fixedPumpRPM = this.getRPMfromSize(Number(appState.poolSizeValue));
+            const pumpData = this.getDataByRPM(fixedPumpRPM);
+            const targetIndex = pumpData.index - 4;
+
+            this.setSliderValue(VARIABLE_PUMP_ELEMENT_ID, targetIndex);
+            this.setAppState({
+                variablePumpRPM: fixedPumpRPMValues[ targetIndex ].RPMSpeed,
+                variablePumpRPMValue: targetIndex
+            });
         },
         renderSliderValue (id, value) {
             const target = this.getRenderTargetById(id);
