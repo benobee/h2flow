@@ -1,6 +1,3 @@
-@blue: #142566;
-@lightBlue: #2C7CBF;
-
 .flowvis-slider-wrapper{
     flex:1 1 25em;
     .slider-range-labels,
@@ -36,7 +33,7 @@
         appearance: none;
         width: 10px; /* Set a specific slider handle width */
         height: 40px; /* Slider handle height */
-        background: @lightBlue;
+        background: @skyBlue;
         cursor: pointer; /* Cursor on hover */
         border-radius:2px;
         margin-left:0;
@@ -44,7 +41,7 @@
       &::-moz-range-thumb {
         width:10px; /* Set a specific slider handle width */
         height: 40px; /* Slider handle height */
-        background: @lightBlue; /* Green background */
+        background: @skyBlue; /* Green background */
         cursor: pointer; /* Cursor on hover */
       }
     }
@@ -136,7 +133,7 @@
 
   .index-section{
     h1{
-      background:@blue;
+      background:@royalBlue;
       color:white;
       display:inline-block;
       padding:0.5em;
@@ -144,7 +141,7 @@
       &:after{
         content:"";
         position:absolute;
-        background:@blue;
+        background:@royalBlue;
         height:110px;
         left:-500px;
         top:0;
@@ -169,6 +166,7 @@
         margin:1em;
       }
     }
+    &#cost-result,
     &#savings-per-year{
       .index-section-wrapper{
         padding-top:0px;
@@ -178,8 +176,6 @@
       }
     }
     &#flowvis-disclaimer{
-      background:@blue;
-      color:white;
       .page-content{
           padding-top:2.5em;
           padding-bottom:2.5em;
@@ -188,6 +184,9 @@
         min-height:0;
       }
       margin-bottom:3em;
+      p{
+        font-size:14px;
+      }
     }
   }
 }
