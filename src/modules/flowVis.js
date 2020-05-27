@@ -118,30 +118,32 @@ const flowVis = (el, stateData, fixedPumpRPMValues) => {
                     }
                 })
                 .on(STATE_CHANGE_EVENT, () => {
-                    const innerTextHelper = (target, value) => {
-                        if (value && appState.monthValue && appState.stateValue) {
+                    const DOMrenderHelper = (target, value) => {
+                        const shouldRender = value && appState.monthValue && appState.stateValue;
+                        const elementValue = shouldRender ? value : "----";
+                        const currentValue = target.innerText;
+
+                        if (elementValue !== currentValue) {
                             target.innerText = value;
-                        } else {
-                            target.innerText = "----";
                         }
                     };
 
                     this.renderTargets.forEach((target) => {
                         switch (target.dataset.renderTarget) {
                             case "fixed-annual-cost":
-                                innerTextHelper(target, this.formatDollar(appState.computed.fixedAnnualCost));
+                                DOMrenderHelper(target, this.formatDollar(appState.computed.fixedAnnualCost));
                                 break;
                             case "fixed-pump-rpm":
-                                innerTextHelper(target, this.formatNumberWithComma(appState.computed.fixedPumpRPM));
+                                DOMrenderHelper(target, this.formatNumberWithComma(appState.computed.fixedPumpRPM));
                                 break;
                             case "variable-pump-rpm":
-                                innerTextHelper(target, this.formatNumberWithComma(appState.variablePumpRPM));
+                                DOMrenderHelper(target, this.formatNumberWithComma(appState.variablePumpRPM));
                                 break;
                             case "variable-cost":
-                                innerTextHelper(target, this.formatDollar(appState.computed.variableAnnualCost));
+                                DOMrenderHelper(target, this.formatDollar(appState.computed.variableAnnualCost));
                                 break;
                             case "variable-savings":
-                                innerTextHelper(target, this.formatDollar(Math.max(0, appState.computed.fixedAnnualCost - appState.computed.variableAnnualCost)));
+                                DOMrenderHelper(target, this.formatDollar(Math.max(0, appState.computed.fixedAnnualCost - appState.computed.variableAnnualCost)));
                                 break;
                         }
                     });
