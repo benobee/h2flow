@@ -20,12 +20,7 @@ class Controller {
      * @returns {HTMLElement}       DOM Node
      */
     elementIsActive (query) {
-        const el = dom(query);
-
-        if (!el) {
-            return false;
-        }
-        return el;
+        return dom(query);
     }
 
     /**
@@ -36,7 +31,7 @@ class Controller {
         array.forEach((event) => {
             const el = this.elementIsActive(event.el);
 
-            if (el) {
+            if (el.length > 0) {
                 this.emit(event.name, el);
             }
         });
